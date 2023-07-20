@@ -1,2 +1,4 @@
-# Project exclude paths
-/scripts/conway.js
+.idea
+**/*.js
+**/*.js.map
+**/*.js.flow
