@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>Conway Life game</title>
+        <meta charset="utf8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link rel="stylesheet" href="./style.css">
+    </head>
+    <body>
+        <canvas id="board"></canvas>
+        <div class="box" id="generation_indicator" style="top: 50px; left: 50px; width: 200px;">
+            <div class="title">
+                <img src="resources/chevron.svg" alt="">
+                <h4>Generation</h4>
+            </div>
+
+            <div class="content" id="generation_counter">
+                <p>Aucune partie initialisée</p>
+            </div>
+        </div>
+
+        <div class="box" id="game_managing" style="top: 189px; left: 78px; width: 300px;">
+            <div class="title">
+                <img src="resources/chevron.svg" alt="">
+                <h4>Gestion de la partie</h4>
+            </div>
+
+            <div class="content">
+                <div class="buttons">
+                    <button id="pause_game">
+                        <svg viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M5.92 24.096q0 0.832 0.576 1.408t1.44 0.608h4.032q0.832 0 1.44-0.608t0.576-1.408v-16.16q0-0.832-0.576-1.44t-1.44-0.576h-4.032q-0.832 0-1.44 0.576t-0.576 1.44v16.16zM18.016 24.096q0 0.832 0.608 1.408t1.408 0.608h4.032q0.832 0 1.44-0.608t0.576-1.408v-16.16q0-0.832-0.576-1.44t-1.44-0.576h-4.032q-0.832 0-1.408 0.576t-0.608 1.44v16.16z"></path>
+                        </svg>
+                    </button>
+
+                    <button id="play_game">
+                        <svg viewBox="-1 0 12 12" xmlns="http://www.w3.org/2000/svg">
+                            <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                                <g transform="translate(-65.000000, -3803.000000)" fill="#fff">
+                                    <g transform="translate(56.000000, 160.000000)">
+                                        <path d="M18.074,3650.7335 L12.308,3654.6315 C10.903,3655.5815 9,3654.5835 9,3652.8985 L9,3645.1015 C9,3643.4155 10.903,3642.4185 12.308,3643.3685 L18.074,3647.2665 C19.306,3648.0995 19.306,3649.9005 18.074,3650.7335" id="play-[#1000]">
+                                        </path>
+                                    </g>
+                                </g>
+                            </g>
+                        </svg>
+                    </button>
+
+                    <button id="stop_game">
+                        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M2 12C2 7.28595 2 4.92893 3.46447 3.46447C4.92893 2 7.28595 2 12 2C16.714 2 19.0711 2 20.5355 3.46447C22 4.92893 22 7.28595 22 12C22 16.714 22 19.0711 20.5355 20.5355C19.0711 22 16.714 22 12 22C7.28595 22 4.92893 22 3.46447 20.5355C2 19.0711 2 16.714 2 12Z" fill="#fff"/>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </body>
+    <script src="./scripts/conway.js"></script>
+    <script src="./scripts/editor.js"></script>
+
+    <script>
+        window.onload = function (){
+            let conway_game = new ConwayGame();
+
+            // update boxes
+            let boxes = find_boxes();
+            boxes.forEach(box => register_box(box));
+
+            let session = null;
+
+            document.querySelector("#play_game").addEventListener("click", () => {
+                if (!conway_game.run) {
+                    conway_game.run = true
+                    session = conway_game.run_game()
+                }
+            });
+
+            document.querySelector("#pause_game").addEventListener("click", () => {
+                if (conway_game.run) {
+                    conway_game.run = false
+                }
+            });
+
+            document.querySelector("#stop_game").addEventListener("click", () => {
+                conway_game.run = false;
+                conway_game.generation = 0;
+                conway_game.clear_grid();
+                conway_game.clear_canvas();
+                conway_game.generate_grid();
+
+                document.querySelector("#generation_counter")
+                    .textContent = "Aucune partie initialisée";
+
+            });
+
+            session = conway_game.run_game();
+        }
+    </script>
+</html>
