@@ -40,7 +40,7 @@ class ConwayGame {
         // we fill the board with black color
         this.clear_canvas();
 
-        // we define useful ressources
+        // we define useful resources
         this.run = true;
         this.generation = 0
 
@@ -183,4 +183,4 @@ class ConwayGame {
 }
 
 
-const wait = (ms) => new Promise((r, _) => setTimeout(() => r(true), ms));
+const wait = (ms: number) => new Promise((r, _) => setTimeout(() => r(true), ms));
